@@ -16,16 +16,16 @@ struct Task tasks[MAX];
 int count = 0;
 int nextId = 1;
 
-// ---------------- INPUT HANDLING ----------------
+// ---------------- INPUT ----------------
 void readLine(char *buffer, int size) {
     fgets(buffer, size, stdin);
     buffer[strcspn(buffer, "\n")] = 0;
 }
 
-// ---------------- FILE HANDLING ----------------
+// ---------------- FILE ----------------
 void saveToFile() {
     FILE *fp = fopen("tasks.dat", "wb");
-    if (fp == NULL) return;
+    if (!fp) return;
 
     fwrite(&count, sizeof(int), 1, fp);
     fwrite(&nextId, sizeof(int), 1, fp);
@@ -36,7 +36,7 @@ void saveToFile() {
 
 void loadFromFile() {
     FILE *fp = fopen("tasks.dat", "rb");
-    if (fp == NULL) return;
+    if (!fp) return;
 
     fread(&count, sizeof(int), 1, fp);
     fread(&nextId, sizeof(int), 1, fp);
@@ -45,7 +45,23 @@ void loadFromFile() {
     fclose(fp);
 }
 
-// ---------------- DISPLAY ----------------
+// ---------------- DASHBOARD ----------------
+void showDashboard() {
+    int pending = 0, completed = 0;
+
+    for (int i = 0; i < count; i++) {
+        if (tasks[i].isCompleted) completed++;
+        else pending++;
+    }
+
+    printf("\n========== DASHBOARD ==========\n");
+    printf("Total Tasks   : %d\n", count);
+    printf("Pending Tasks : %d\n", pending);
+    printf("Completed     : %d\n", completed);
+    printf("================================\n");
+}
+
+// ---------------- PRINT ----------------
 void printTask(struct Task t) {
     printf("\n----------------------------------\n");
     printf("ID: %d\n", t.id);
@@ -55,7 +71,22 @@ void printTask(struct Task t) {
     printf("Status: %s\n", t.isCompleted ? "Done" : "Pending");
 }
 
-// ---------------- ADD TASK ----------------
+// ---------------- SORT ----------------
+void sortTasks() {
+    struct Task temp;
+
+    for (int i = 0; i < count - 1; i++) {
+        for (int j = 0; j < count - i - 1; j++) {
+            if (strcmp(tasks[j].datetime, tasks[j + 1].datetime) > 0) {
+                temp = tasks[j];
+                tasks[j] = tasks[j + 1];
+                tasks[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// ---------------- ADD ----------------
 void addTask() {
     if (count >= MAX) {
         printf("Task limit reached!\n");
@@ -65,51 +96,55 @@ void addTask() {
     struct Task t;
     t.id = nextId++;
 
-    getchar(); // clear buffer
+    getchar();
 
     printf("Enter Title: ");
     readLine(t.title, sizeof(t.title));
 
+    if (strlen(t.title) == 0) {
+        printf("Title cannot be empty!\n");
+        return;
+    }
+
     printf("Enter Category: ");
     readLine(t.category, sizeof(t.category));
 
-    printf("Enter Date & Time (YYYY-MM-DD HH:MM): ");
+    printf("Enter DateTime (YYYY-MM-DD HH:MM): ");
     readLine(t.datetime, sizeof(t.datetime));
 
-    // Conflict warning
     for (int i = 0; i < count; i++) {
         if (strcmp(tasks[i].datetime, t.datetime) == 0) {
-            printf("⚠ Warning: Another task exists at same time!\n");
+            printf("⚠ Conflict: Another task exists at same time!\n");
         }
     }
 
     t.isCompleted = 0;
     tasks[count++] = t;
 
-    printf("\nTask Added Successfully!\n");
+    printf("Task Added Successfully!\n");
 }
 
-// ---------------- VIEW TASKS ----------------
+// ---------------- VIEW ----------------
 void viewTasks() {
     if (count == 0) {
-        printf("\nNo tasks available.\n");
+        printf("No tasks available.\n");
         return;
     }
 
+    sortTasks();
+
     printf("\n====== PENDING TASKS ======\n");
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++)
         if (!tasks[i].isCompleted)
             printTask(tasks[i]);
-    }
 
     printf("\n====== COMPLETED TASKS ======\n");
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++)
         if (tasks[i].isCompleted)
             printTask(tasks[i]);
-    }
 }
 
-// ---------------- MARK COMPLETED ----------------
+// ---------------- COMPLETE ----------------
 void markCompleted() {
     int id;
     printf("Enter Task ID: ");
@@ -118,7 +153,7 @@ void markCompleted() {
     for (int i = 0; i < count; i++) {
         if (tasks[i].id == id) {
             tasks[i].isCompleted = 1;
-            printf("Task marked as completed!\n");
+            printf("Marked as completed.\n");
             return;
         }
     }
@@ -126,26 +161,26 @@ void markCompleted() {
     printf("Task not found!\n");
 }
 
-// ---------------- DELETE TASK ----------------
+// ---------------- DELETE ----------------
 void deleteTask() {
     int id;
     char confirm;
 
-    printf("Enter Task ID to delete: ");
+    printf("Enter Task ID: ");
     scanf("%d", &id);
 
-    printf("Are you sure? (y/n): ");
+    printf("Confirm delete (y/n): ");
     scanf(" %c", &confirm);
 
     if (confirm != 'y') return;
 
     for (int i = 0; i < count; i++) {
         if (tasks[i].id == id) {
-            for (int j = i; j < count - 1; j++) {
+            for (int j = i; j < count - 1; j++)
                 tasks[j] = tasks[j + 1];
-            }
+
             count--;
-            printf("Task deleted successfully!\n");
+            printf("Deleted successfully.\n");
             return;
         }
     }
@@ -153,10 +188,10 @@ void deleteTask() {
     printf("Task not found!\n");
 }
 
-// ---------------- UPDATE TASK ----------------
+// ---------------- UPDATE ----------------
 void updateTask() {
     int id;
-    printf("Enter Task ID to update: ");
+    printf("Enter Task ID: ");
     scanf("%d", &id);
 
     getchar();
@@ -164,16 +199,16 @@ void updateTask() {
     for (int i = 0; i < count; i++) {
         if (tasks[i].id == id) {
 
-            printf("Enter new Title: ");
+            printf("Enter New Title: ");
             readLine(tasks[i].title, sizeof(tasks[i].title));
 
-            printf("Enter new Category: ");
+            printf("Enter New Category: ");
             readLine(tasks[i].category, sizeof(tasks[i].category));
 
-            printf("Enter new Date & Time: ");
+            printf("Enter New DateTime: ");
             readLine(tasks[i].datetime, sizeof(tasks[i].datetime));
 
-            printf("Task updated successfully!\n");
+            printf("Updated successfully.\n");
             return;
         }
     }
@@ -183,25 +218,58 @@ void updateTask() {
 
 // ---------------- SEARCH ----------------
 void searchTask() {
-    char keyword[50];
+    char key[50];
 
     getchar();
     printf("Enter keyword: ");
-    readLine(keyword, sizeof(keyword));
+    readLine(key, sizeof(key));
 
     int found = 0;
 
     for (int i = 0; i < count; i++) {
-        if (strstr(tasks[i].title, keyword) ||
-            strstr(tasks[i].category, keyword)) {
-
+        if (strstr(tasks[i].title, key) ||
+            strstr(tasks[i].category, key)) {
             printTask(tasks[i]);
             found = 1;
         }
     }
 
-    if (!found) {
+    if (!found)
         printf("No matching tasks found.\n");
+}
+
+// ---------------- FILTER ----------------
+void filterTasks() {
+    int choice;
+
+    printf("\n1. Pending\n2. Completed\n3. By Category\nChoice: ");
+    scanf("%d", &choice);
+
+    if (choice == 1) {
+        for (int i = 0; i < count; i++)
+            if (!tasks[i].isCompleted)
+                printTask(tasks[i]);
+    }
+
+    else if (choice == 2) {
+        for (int i = 0; i < count; i++)
+            if (tasks[i].isCompleted)
+                printTask(tasks[i]);
+    }
+
+    else if (choice == 3) {
+        char cat[20];
+        getchar();
+        printf("Enter category: ");
+        readLine(cat, sizeof(cat));
+
+        for (int i = 0; i < count; i++)
+            if (strcmp(tasks[i].category, cat) == 0)
+                printTask(tasks[i]);
+    }
+
+    else {
+        printf("Invalid choice.\n");
     }
 }
 
@@ -212,16 +280,17 @@ int main() {
     loadFromFile();
 
     while (1) {
-        printf("\n====================================\n");
-        printf("       TO DO LIST MANAGER\n");
-        printf("====================================\n");
+        showDashboard();
+
+        printf("\n===== TO DO LIST MANAGER =====\n");
         printf("1. Add Task\n");
         printf("2. View Tasks\n");
         printf("3. Mark Completed\n");
         printf("4. Delete Task\n");
         printf("5. Update Task\n");
         printf("6. Search Task\n");
-        printf("7. Save & Exit\n");
+        printf("7. Filter Tasks\n");
+        printf("8. Save & Exit\n");
 
         printf("Enter choice: ");
         scanf("%d", &choice);
@@ -233,9 +302,10 @@ int main() {
             case 4: deleteTask(); break;
             case 5: updateTask(); break;
             case 6: searchTask(); break;
-            case 7:
+            case 7: filterTasks(); break;
+            case 8:
                 saveToFile();
-                printf("Data saved. Exiting...\n");
+                printf("Saved successfully.\n");
                 exit(0);
             default:
                 printf("Invalid choice!\n");

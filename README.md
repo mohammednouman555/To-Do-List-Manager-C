@@ -57,12 +57,30 @@ Multi-user support
 
 ## 📸 Output Screenshots
 
-<img width="300" height="300" alt="Screenshot 1" src="https://github.com/user-attachments/assets/149c0adb-6041-4abf-864f-17211ce991e3" />
-<img width="300" height="300" alt="Screenshot 2" src="https://github.com/user-attachments/assets/f70ee133-60a8-44e3-a9bc-fd18598d7a7e" />
-<img width="300" height="300" alt="Screenshot 3" src="https://github.com/user-attachments/assets/6eb2ee97-e029-4624-a573-caa2d3073b59" />
-<img width="300" height="300" alt="Screenshot 4" src="https://github.com/user-attachments/assets/90ba958b-0cd0-44ad-9c2e-bf86774cb0b4" />
-<img width="300" height="300" alt="Screenshot 5" src="https://github.com/user-attachments/assets/c28294b9-569e-4f71-8f6d-e7626e4b563b" />
-<img width="300" height="300" alt="Screenshot 6" src="https://github.com/user-attachments/assets/b535f373-c829-47cf-8cc9-d77621b03592" />
-<img width="300" height="300" alt="Screenshot 7" src="https://github.com/user-attachments/assets/ab3986e7-c238-4f7d-83ef-c68335118e7d" />
+### 🔹 Dashboard View
+Displays an overview of total, pending, and completed tasks, providing a quick summary of task status.
+
+![Dashboard](screenshots/Dashboard.png)
+
+
+### 🔹 Add Task
+Interface for creating a new task with details such as title, category, and scheduled date-time, along with conflict detection.
+
+![Add Task](screenshots/AddTask.png)
+
+### 🔹 View Tasks
+Shows all tasks organized by status (pending and completed) and sorted chronologically for better tracking.
+
+![View Tasks](screenshots/ViewTasks.png)
+
+### 🔹 Filter Tasks
+Allows users to quickly locate tasks based on keywords, category, or completion status.
+
+![Filter](screenshots/SearchTask.png)
+
+### 🔹 Delete Tasks
+Allows users to quickly locate tasks based on keywords, category, or completion status.
+
+![Delete](screenshots/DeleteTask.png)
 
 ---
