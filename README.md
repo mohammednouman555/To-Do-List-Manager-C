@@ -1,11 +1,13 @@
-📌 Overview  
+# To-Do-List-Manager
+
+## 📌 Overview  
 This project is a **Command-Line Based To-Do List Manager** developed in **C**. It enables users to efficiently manage daily tasks with features like task creation, updating, deletion, searching, and persistent storage.  
 
 The application showcases core system-level programming concepts including **file handling, structured data management, and modular programming**.
 
 ---
 
-🚀 Features  
+## 🚀 Features  
 - Add, update, and delete tasks  
 - Mark tasks as completed or pending  
 - Search tasks by title or category  
@@ -16,7 +18,7 @@ The application showcases core system-level programming concepts including **fil
 
 ---
 
-🧠 Concepts Used  
+## 🧠 Concepts Used  
 - Structures (`struct`)  
 - File Handling (`fopen`, `fread`, `fwrite`)  
 - String Manipulation (`strcpy`, `strcmp`, `strstr`)  
@@ -26,24 +28,24 @@ The application showcases core system-level programming concepts including **fil
 
 ---
 
-🖥️ Tech Stack  
+## 🖥️ Tech Stack  
 - **Language:** C  
 - **Interface:** Command Line Interface (CLI)  
 
 ---
 
-▶️ How to Run
+## ▶️ How to Run
   **Compile the program:** gcc main.c -o todo
   **Run the executable:** ./todo
 
   ---
   
-🎯 Learning Outcome
+## 🎯 Learning Outcome
 This project helped in understanding how low-level programming can be used to build practical applications with structured data handling and persistent storage.
 
 ---
 
-🔗 Future Improvements
+## 🔗 Future Improvements
 
 Reminder system using system time
 Sorting tasks by priority or deadline
@@ -52,10 +54,10 @@ Multi-user support
 
 ---
 
-📸 Output Screenshots
+## 📸 Output Screenshots
 
-<img width="740" height="703" alt="Screenshot 1" src="https://github.com/user-attachments/assets/149c0adb-6041-4abf-864f-17211ce991e3" />
-<img width="645" height="523" alt="Screenshot 2" src="https://github.com/user-attachments/assets/f70ee133-60a8-44e3-a9bc-fd18598d7a7e" />
+<img width="340" height="303" alt="Screenshot 1" src="https://github.com/user-attachments/assets/149c0adb-6041-4abf-864f-17211ce991e3" />
+<img width="340" height="303" alt="Screenshot 2" src="https://github.com/user-attachments/assets/f70ee133-60a8-44e3-a9bc-fd18598d7a7e" />
 
 
 
